@@ -22,6 +22,8 @@ namespace MatrixLib
         friend VectorClass operator*(const VectorClass& first, const int& num);
         friend VectorClass operator*(const int& num, const VectorClass& second);
 
+        friend VectorClass operator*(const VectorClass& first, const VectorClass& second);
+
         friend VectorClass operator/(const VectorClass& first,const int& num);
     };
 

@@ -62,6 +62,18 @@ namespace MatrixLib
         return res;
     }
 
+    VectorClass operator*(const VectorClass& first, const VectorClass& second)
+    {
+        VectorClass res;
+
+        __m128i simd_vec_1 = _mm_load_si128((__m128i*)first.vec);
+        __m128i simd_vec_2 = _mm_load_si128((__m128i*)second.vec);
+        __m128i vec_res = _mm_mullo_epi32(simd_vec_1,simd_vec_2);
+        _mm_store_si128((__m128i*)res.vec,vec_res);
+
+        return res;
+    };
+
     VectorClass operator/(const VectorClass& first,const int& num)
     {
         VectorClass res;
