@@ -1,6 +1,5 @@
 #include "library.h"
 
-#include <iostream>
 
 namespace MatrixLib
 {
@@ -18,12 +17,11 @@ namespace MatrixLib
     VectorClass operator+(const VectorClass& first, const VectorClass& second)
     {
         VectorClass res;
-        memcpy(res.vec,first.vec,4 * sizeof(int));
 
-        res.vec[0] += second.vec[0];
-        res.vec[1] += second.vec[1];
-        res.vec[2] += second.vec[2];
-        res.vec[3] += second.vec[3];
+        __m128i simd_vec_1 = _mm_load_si128((__m128i*)first.vec);
+        __m128i simd_vec_2 = _mm_load_si128((__m128i*)second.vec);
+        __m128i simd_vec_res = _mm_add_epi32(simd_vec_1,simd_vec_2);
+        _mm_store_si128((__m128i*)res.vec,simd_vec_res);
 
         return res;
     }
@@ -31,12 +29,11 @@ namespace MatrixLib
     VectorClass operator-(const VectorClass& first, const VectorClass& second)
     {
         VectorClass res;
-        memcpy(res.vec,first.vec,4 * sizeof(int));
 
-        res.vec[0] -= second.vec[0];
-        res.vec[1] -= second.vec[1];
-        res.vec[2] -= second.vec[2];
-        res.vec[3] -= second.vec[3];
+        __m128i simd_vec_1 = _mm_load_si128((__m128i*)first.vec);
+        __m128i simd_vec_2 = _mm_load_si128((__m128i*)second.vec);
+        __m128i simd_vec_res = _mm_sub_epi32(simd_vec_1,simd_vec_2);
+        _mm_store_si128((__m128i*)res.vec,simd_vec_res);
 
         return res;
     }
@@ -44,12 +41,11 @@ namespace MatrixLib
     VectorClass operator*(const VectorClass& first, const int& num)
     {
         VectorClass res;
-        memcpy(res.vec,first.vec,4 * sizeof(int));
 
-        res.vec[0] *= num;
-        res.vec[1] *= num;
-        res.vec[2] *= num;
-        res.vec[3] *= num;
+        __m128i simd_vec = _mm_load_si128((__m128i*)first.vec);
+        __m128i scalar_vec = _mm_set1_epi32(num);
+        __m128i vec_res = _mm_mullo_epi32(simd_vec,scalar_vec);
+        _mm_store_si128((__m128i*)res.vec,vec_res);
 
         return res;
     }
@@ -57,12 +53,11 @@ namespace MatrixLib
     VectorClass operator*(const int& num, const VectorClass& second)
     {
         VectorClass res;
-        memcpy(res.vec,second.vec, 4 * sizeof(int));
 
-        res.vec[0] *= num;
-        res.vec[1] *= num;
-        res.vec[2] *= num;
-        res.vec[3] *= num;
+        __m128i scalar_vec = _mm_set1_epi32(num);
+        __m128i simd_vec = _mm_load_si128((__m128i*)second.vec);
+        __m128i vec_res = _mm_mullo_epi32(scalar_vec,simd_vec);
+        _mm_store_si128((__m128i*)res.vec,vec_res);
 
         return res;
     }
@@ -79,9 +74,4 @@ namespace MatrixLib
 
         return res;
     }
-
-
-
 }
-
-#endif // MATRIXLIB_LIBRARY_H
