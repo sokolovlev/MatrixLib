@@ -14,17 +14,56 @@ namespace MatrixLib
     public:
         VectorClass() = default;
         explicit VectorClass(const int *array);
+        VectorClass(const VectorClass& array);
+
         VectorClass& operator=(const VectorClass& other);
+        VectorClass& operator=(const int* other);
 
         friend VectorClass operator+(const VectorClass& first, const VectorClass& second);
+        friend VectorClass operator+(const VectorClass& first, const int* second);
+        friend VectorClass operator+(const int* first, const VectorClass& second);
+
         friend VectorClass operator-(const VectorClass& first, const VectorClass& second);
+        friend VectorClass operator-(const VectorClass& first, const int* second);
+        friend VectorClass operator-(const int* first, const VectorClass& second);
 
         friend VectorClass operator*(const VectorClass& first, const int& num);
         friend VectorClass operator*(const int& num, const VectorClass& second);
-
         friend VectorClass operator*(const VectorClass& first, const VectorClass& second);
 
         friend VectorClass operator/(const VectorClass& first,const int& num);
+    };
+
+    class MatrixClass
+    {
+        alignas(16) int mtrx[4][4] = {0};
+
+    public:
+        MatrixClass() = default;
+
+        MatrixClass(const int *matrix)
+        {
+            memcpy(mtrx,matrix,16 * sizeof(int));
+        }
+
+        MatrixClass(const MatrixClass& matrix)
+        {
+            memcpy(&mtrx,matrix.mtrx,16 * sizeof(int));
+        }
+
+        MatrixClass& operator=(const int* matrix);
+        MatrixClass& operator=(const MatrixClass& matrix);
+
+        friend MatrixClass operator+(const MatrixClass& first, const MatrixClass& second);
+        friend MatrixClass operator+(const MatrixClass& first, const int& num);
+        friend MatrixClass operator+(const int& num, const MatrixClass& second);
+
+        friend MatrixClass operator-(const MatrixClass& first, const MatrixClass& second);
+        friend MatrixClass operator-(const MatrixClass& first, const int& num);
+        friend MatrixClass operator-(const int& num, const MatrixClass& second);
+
+        friend MatrixClass operator*(const MatrixClass& first,const MatrixClass& second);
+
     };
 
 }
