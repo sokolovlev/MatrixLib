@@ -1,27 +1,32 @@
-#include "library.h"
+#include "MatrixLib.h"
 
 
 namespace MatrixLib
 {
-    VectorClass::VectorClass(const int *array)
+    VectorClass::VectorClass(const std::initializer_list<int>& array)
     {
-        memcpy(vec,array,4 * sizeof(int));
+        memcpy(vec,array.begin(),4 * sizeof(int));
     }
 
-    VectorClass::VectorClass(const VectorClass& array)
+    VectorClass::VectorClass(const int *newVector)
     {
-        memcpy(vec,array.vec,4 * sizeof(int));
+        memcpy(vec,newVector,4 * sizeof(int));
     }
 
-    VectorClass& VectorClass::operator=(const VectorClass& other)
+    VectorClass::VectorClass(const VectorClass& newVector)
     {
-        memcpy(vec,other.vec,4 * sizeof(int));
+        memcpy(vec,newVector.vec,4 * sizeof(int));
+    }
+
+    VectorClass& VectorClass::operator=(const int* newVector)
+    {
+        memcpy(vec,newVector,4 * sizeof(int));
         return *this;
     }
 
-    VectorClass& VectorClass::operator=(const int* other)
+    VectorClass& VectorClass::operator=(const VectorClass& newVector)
     {
-        memcpy(vec,other,4 * sizeof(int));
+        memcpy(vec,newVector.vec,4 * sizeof(int));
         return *this;
     }
 
@@ -29,10 +34,10 @@ namespace MatrixLib
     {
         VectorClass res;
 
-        __m128i simd_vec_1 = _mm_load_si128((__m128i*)first.vec);
-        __m128i simd_vec_2 = _mm_load_si128((__m128i*)second.vec);
-        __m128i simd_vec_res = _mm_add_epi32(simd_vec_1,simd_vec_2);
-        _mm_store_si128((__m128i*)res.vec,simd_vec_res);
+        __m128i vec1 = _mm_load_si128((__m128i*)first.vec);
+        __m128i vec2 = _mm_load_si128((__m128i*)second.vec);
+        __m128i vec_res = _mm_add_epi32(vec1,vec2);
+        _mm_store_si128((__m128i*)res.vec,vec_res);
 
         return res;
     }
@@ -41,10 +46,10 @@ namespace MatrixLib
     {
         VectorClass res;
 
-        __m128i simd_vec_1 = _mm_load_si128((__m128i*)first.vec);
-        __m128i simd_vec_2 = _mm_load_si128((__m128i*)second);
-        __m128i simd_vec_res = _mm_add_epi32(simd_vec_1,simd_vec_2);
-        _mm_store_si128((__m128i*)res.vec,simd_vec_res);
+        __m128i vec1 = _mm_load_si128((__m128i*)first.vec);
+        __m128i vec2 = _mm_load_si128((__m128i*)second);
+        __m128i vec_res = _mm_add_epi32(vec1,vec2);
+        _mm_store_si128((__m128i*)res.vec,vec_res);
 
         return res;
     }
@@ -53,10 +58,10 @@ namespace MatrixLib
     {
         VectorClass res;
 
-        __m128i simd_vec_1 = _mm_load_si128((__m128i*)first);
-        __m128i simd_vec_2 = _mm_load_si128((__m128i*)second.vec);
-        __m128i simd_vec_res = _mm_add_epi32(simd_vec_1,simd_vec_2);
-        _mm_store_si128((__m128i*)res.vec,simd_vec_res);
+        __m128i vec1 = _mm_load_si128((__m128i*)first);
+        __m128i vec2 = _mm_load_si128((__m128i*)second.vec);
+        __m128i vec_res = _mm_add_epi32(vec1,vec2);
+        _mm_store_si128((__m128i*)res.vec,vec_res);
 
         return res;
     }
@@ -65,10 +70,10 @@ namespace MatrixLib
     {
         VectorClass res;
 
-        __m128i simd_vec_1 = _mm_load_si128((__m128i*)first.vec);
-        __m128i simd_vec_2 = _mm_load_si128((__m128i*)second.vec);
-        __m128i simd_vec_res = _mm_sub_epi32(simd_vec_1,simd_vec_2);
-        _mm_store_si128((__m128i*)res.vec,simd_vec_res);
+        __m128i vec1 = _mm_load_si128((__m128i*)first.vec);
+        __m128i vec2 = _mm_load_si128((__m128i*)second.vec);
+        __m128i vec_res = _mm_sub_epi32(vec1,vec2);
+        _mm_store_si128((__m128i*)res.vec,vec_res);
 
         return res;
     }
@@ -77,10 +82,10 @@ namespace MatrixLib
     {
         VectorClass res;
 
-        __m128i simd_vec_1 = _mm_load_si128((__m128i*)first.vec);
-        __m128i simd_vec_2 = _mm_load_si128((__m128i*)second);
-        __m128i simd_vec_res = _mm_sub_epi32(simd_vec_1,simd_vec_2);
-        _mm_store_si128((__m128i*)res.vec,simd_vec_res);
+        __m128i vec1 = _mm_load_si128((__m128i*)first.vec);
+        __m128i vec2 = _mm_load_si128((__m128i*)second);
+        __m128i vec_res = _mm_sub_epi32(vec1,vec2);
+        _mm_store_si128((__m128i*)res.vec,vec_res);
 
         return res;
     }
@@ -89,10 +94,10 @@ namespace MatrixLib
     {
         VectorClass res;
 
-        __m128i simd_vec_1 = _mm_load_si128((__m128i*)first);
-        __m128i simd_vec_2 = _mm_load_si128((__m128i*)second.vec);
-        __m128i simd_vec_res = _mm_sub_epi32(simd_vec_1,simd_vec_2);
-        _mm_store_si128((__m128i*)res.vec,simd_vec_res);
+        __m128i vec1 = _mm_load_si128((__m128i*)first);
+        __m128i vec2 = _mm_load_si128((__m128i*)second.vec);
+        __m128i vec_res = _mm_sub_epi32(vec1,vec2);
+        _mm_store_si128((__m128i*)res.vec,vec_res);
 
         return res;
     }
@@ -101,9 +106,9 @@ namespace MatrixLib
     {
         VectorClass res;
 
-        __m128i simd_vec = _mm_load_si128((__m128i*)first.vec);
-        __m128i scalar_vec = _mm_set1_epi32(num);
-        __m128i vec_res = _mm_mullo_epi32(simd_vec,scalar_vec);
+        __m128i vec1 = _mm_load_si128((__m128i*)first.vec);
+        __m128i vec2 = _mm_set1_epi32(num);
+        __m128i vec_res = _mm_mullo_epi32(vec1,vec2);
         _mm_store_si128((__m128i*)res.vec,vec_res);
 
         return res;
@@ -113,9 +118,9 @@ namespace MatrixLib
     {
         VectorClass res;
 
-        __m128i scalar_vec = _mm_set1_epi32(num);
-        __m128i simd_vec = _mm_load_si128((__m128i*)second.vec);
-        __m128i vec_res = _mm_mullo_epi32(scalar_vec,simd_vec);
+        __m128i vec1 = _mm_set1_epi32(num);
+        __m128i vec2 = _mm_load_si128((__m128i*)second.vec);
+        __m128i vec_res = _mm_mullo_epi32(vec1,vec2);
         _mm_store_si128((__m128i*)res.vec,vec_res);
 
         return res;
@@ -125,13 +130,56 @@ namespace MatrixLib
     {
         VectorClass res;
 
-        __m128i simd_vec_1 = _mm_load_si128((__m128i*)first.vec);
-        __m128i simd_vec_2 = _mm_load_si128((__m128i*)second.vec);
-        __m128i vec_res = _mm_mullo_epi32(simd_vec_1,simd_vec_2);
+        __m128i vec_1 = _mm_load_si128((__m128i*)first.vec);
+        __m128i vec_2 = _mm_load_si128((__m128i*)second.vec);
+        __m128i vec_res = _mm_mullo_epi32(vec_1,vec_2);
         _mm_store_si128((__m128i*)res.vec,vec_res);
 
         return res;
     };
+
+    int dot(const VectorClass& first, const int* second)
+    {
+        VectorClass res;
+
+        __m128i vec1 = _mm_load_si128((__m128i*)first.vec);
+        __m128i vec2 = _mm_load_si128((__m128i*)second);
+        __m128i vec_res = _mm_mullo_epi32(vec1,vec2);
+
+        int a = _mm_extract_epi32(vec_res,0);      //-msse4.1
+        int b = _mm_extract_epi32(vec_res,1);
+        int c = _mm_extract_epi32(vec_res,2);
+
+        return a + b + c;
+    }
+
+    int dot(const int* first, const VectorClass& second)
+    {
+        VectorClass res;
+
+        __m128i vec1 = _mm_load_si128((__m128i*)first);
+        __m128i vec2 = _mm_load_si128((__m128i*)second.vec);
+        __m128i vec_res = _mm_mullo_epi32(vec1,vec2);
+
+        int a = _mm_extract_epi32(vec_res,0);      //-msse4.1
+        int b = _mm_extract_epi32(vec_res,1);
+        int c = _mm_extract_epi32(vec_res,2);
+
+        return a + b + c;
+    }
+
+    int dot(const VectorClass& first,const VectorClass& second)
+    {
+        __m128i vec_1 = _mm_load_si128((__m128i*)first.vec);
+        __m128i vec_2 = _mm_load_si128((__m128i*)second.vec);
+        __m128i vec_res = _mm_mullo_epi32(vec_1,vec_2);    //
+
+        int a = _mm_extract_epi32(vec_res,0);      //-msse4.1
+        int b = _mm_extract_epi32(vec_res,1);
+        int c = _mm_extract_epi32(vec_res,2);
+
+        return a + b + c;
+    }
 
     VectorClass operator/(const VectorClass& first,const int& num)
     {

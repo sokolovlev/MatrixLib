@@ -2,7 +2,8 @@
 #define MATRIXLIB_LIBRARY_H
 
 #include <cstring>
-#include <immintrin.h>
+#include <smmintrin.h>
+#include <initializer_list>
 
 namespace MatrixLib
 {
@@ -13,7 +14,8 @@ namespace MatrixLib
 
     public:
         VectorClass() = default;
-        explicit VectorClass(const int *array);
+        VectorClass(const std::initializer_list<int>& array);
+        VectorClass(const int *array);
         VectorClass(const VectorClass& array);
 
         VectorClass& operator=(const VectorClass& other);
@@ -31,8 +33,17 @@ namespace MatrixLib
         friend VectorClass operator*(const int& num, const VectorClass& second);
         friend VectorClass operator*(const VectorClass& first, const VectorClass& second);
 
+        friend int dot(const VectorClass& first,const VectorClass& second);
+        friend int dot(const int* first, const VectorClass& second);
+        friend int dot(const VectorClass& first,const int* second);
+
+
         friend VectorClass operator/(const VectorClass& first,const int& num);
     };
+
+    int dot(const VectorClass& first, const VectorClass& second);
+    int dot(const int* first, const VectorClass& second);
+    int dot(const VectorClass& first,const int* second);
 
     class MatrixClass
     {
