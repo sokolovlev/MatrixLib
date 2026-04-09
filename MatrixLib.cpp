@@ -194,6 +194,26 @@ namespace MatrixLib
         return res;
     }
 
+    MatrixClass::MatrixClass(const std::initializer_list<std::initializer_list<int>>& matrix)
+    {
+        memcpy(&mtrx,matrix.begin() -> begin(),16 * sizeof(int));
+    }
+
+    MatrixClass::MatrixClass(const std::initializer_list<int>& matrix)
+    {
+        memcpy(&mtrx,matrix.begin(),16 * sizeof(int));
+    }
+
+    MatrixClass::MatrixClass(const int *matrix)
+    {
+        memcpy(mtrx,matrix,16 * sizeof(int));
+    }
+
+    MatrixClass::MatrixClass(const MatrixClass& matrix)
+    {
+        memcpy(&mtrx,matrix.mtrx,16 * sizeof(int));
+    }
+
     MatrixClass& MatrixClass::operator=(const int* matrix)
     {
         memcpy(mtrx,matrix,16 * sizeof(int));

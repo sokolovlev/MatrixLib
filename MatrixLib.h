@@ -51,16 +51,10 @@ namespace MatrixLib
 
     public:
         MatrixClass() = default;
-
-        MatrixClass(const int *matrix)
-        {
-            memcpy(mtrx,matrix,16 * sizeof(int));
-        }
-
-        MatrixClass(const MatrixClass& matrix)
-        {
-            memcpy(&mtrx,matrix.mtrx,16 * sizeof(int));
-        }
+        MatrixClass(const std::initializer_list<std::initializer_list<int>>& matrix);
+        MatrixClass(const std::initializer_list<int>& matrix);
+        MatrixClass(const int *matrix);
+        MatrixClass(const MatrixClass& matrix);
 
         MatrixClass& operator=(const int* matrix);
         MatrixClass& operator=(const MatrixClass& matrix);
