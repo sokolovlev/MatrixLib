@@ -3,6 +3,7 @@
 
 #include <cstring>
 #include <smmintrin.h>
+#include <immintrin.h>
 #include <initializer_list>
 
 namespace MatrixLib
@@ -47,7 +48,7 @@ namespace MatrixLib
 
     class MatrixClass
     {
-        alignas(16) int mtrx[4][4] = {0};
+        alignas(32) int mtrx[4][4] = {0};
 
     public:
         MatrixClass() = default;

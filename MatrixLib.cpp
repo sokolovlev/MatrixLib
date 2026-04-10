@@ -230,25 +230,17 @@ namespace MatrixLib
     {
         MatrixClass res;
 
-        __m128i mtrx_0_str_0 = _mm_load_si128((__m128i*)first.mtrx[0]);
-        __m128i mtrx_0_str_1 = _mm_load_si128((__m128i*)first.mtrx[1]);
-        __m128i mtrx_0_str_2 = _mm_load_si128((__m128i*)first.mtrx[2]);
-        __m128i mtrx_0_str_3 = _mm_load_si128((__m128i*)first.mtrx[3]);
+        __m256i mtrx0_str01 = _mm256_load_si256((__m256i*)first.mtrx[0]);
+        __m256i mtrx0_str23 = _mm256_load_si256((__m256i*)first.mtrx[2]);
 
-        __m128i mtrx_1_str_0 = _mm_load_si128((__m128i*)second.mtrx[0]);
-        __m128i mtrx_1_str_1 = _mm_load_si128((__m128i*)second.mtrx[1]);
-        __m128i mtrx_1_str_2 = _mm_load_si128((__m128i*)second.mtrx[2]);
-        __m128i mtrx_1_str_3 = _mm_load_si128((__m128i*)second.mtrx[3]);
+        __m256i mtrx1_str01 = _mm256_load_si256((__m256i*)second.mtrx[0]);
+        __m256i mtrx1_str23 = _mm256_load_si256((__m256i*)second.mtrx[2]);
 
-        __m128i mtrx_res_str_0 = _mm_add_epi32(mtrx_0_str_0,mtrx_1_str_0);
-        __m128i mtrx_res_str_1 = _mm_add_epi32(mtrx_0_str_1,mtrx_1_str_1);
-        __m128i mtrx_res_str_2 = _mm_add_epi32(mtrx_0_str_2,mtrx_1_str_2);
-        __m128i mtrx_res_str_3 = _mm_add_epi32(mtrx_0_str_3,mtrx_1_str_3);
+        __m256i res01 = _mm256_add_epi32(mtrx0_str01,mtrx1_str01);
+        __m256i res23 = _mm256_add_epi32(mtrx0_str23,mtrx1_str23);
 
-        _mm_store_si128((__m128i*)res.mtrx[0],mtrx_res_str_0);
-        _mm_store_si128((__m128i*)res.mtrx[1],mtrx_res_str_1);
-        _mm_store_si128((__m128i*)res.mtrx[2],mtrx_res_str_2);
-        _mm_store_si128((__m128i*)res.mtrx[3],mtrx_res_str_3);
+        _mm256_store_si256((__m256i*)res.mtrx[0],res01);
+        _mm256_store_si256((__m256i*)res.mtrx[2],res23);
 
         return res;
     }
@@ -257,22 +249,16 @@ namespace MatrixLib
     {
         MatrixClass res;
 
-        __m128i str_0 = _mm_load_si128((__m128i*)first.mtrx[0]);
-        __m128i str_1 = _mm_load_si128((__m128i*)first.mtrx[1]);
-        __m128i str_2 = _mm_load_si128((__m128i*)first.mtrx[2]);
-        __m128i str_3 = _mm_load_si128((__m128i*)first.mtrx[3]);
+        __m256i str01 = _mm256_load_si256((__m256i*)first.mtrx[0]);
+        __m256i str23 = _mm256_load_si256((__m256i*)first.mtrx[2]);
 
-        __m128i scalar = _mm_set1_epi32(num);
+        __m256i scalar = _mm256_set1_epi32(num);
 
-        __m128i res_str_0 = _mm_add_epi32(str_0,scalar);
-        __m128i res_str_1 = _mm_add_epi32(str_1,scalar);
-        __m128i res_str_2 = _mm_add_epi32(str_2,scalar);
-        __m128i res_str_3 = _mm_add_epi32(str_3,scalar);
+        __m256i res01 = _mm256_add_epi32(str01,scalar);
+        __m256i res23 = _mm256_add_epi32(str23,scalar);
 
-        _mm_store_si128((__m128i*)res.mtrx[0],res_str_0);
-        _mm_store_si128((__m128i*)res.mtrx[1],res_str_1);
-        _mm_store_si128((__m128i*)res.mtrx[2],res_str_2);
-        _mm_store_si128((__m128i*)res.mtrx[3],res_str_3);
+        _mm256_store_si256((__m256i*)res.mtrx[0],res01);
+        _mm256_store_si256((__m256i*)res.mtrx[2],res23);
 
         return res;
     }
@@ -281,22 +267,16 @@ namespace MatrixLib
     {
         MatrixClass res;
 
-        __m128i str_0 = _mm_load_si128((__m128i*)second.mtrx[0]);
-        __m128i str_1 = _mm_load_si128((__m128i*)second.mtrx[1]);
-        __m128i str_2 = _mm_load_si128((__m128i*)second.mtrx[2]);
-        __m128i str_3 = _mm_load_si128((__m128i*)second.mtrx[3]);
+        __m256i str01 = _mm256_load_si256((__m256i*)second.mtrx[0]);
+        __m256i str23 = _mm256_load_si256((__m256i*)second.mtrx[0]);
 
-        __m128i scalar = _mm_set1_epi32(num);
+        __m256i scalar = _mm256_set1_epi32(num);
 
-        __m128i res_str_0 = _mm_add_epi32(str_0,scalar);
-        __m128i res_str_1 = _mm_add_epi32(str_1,scalar);
-        __m128i res_str_2 = _mm_add_epi32(str_2,scalar);
-        __m128i res_str_3 = _mm_add_epi32(str_3,scalar);
+        __m256i res01 = _mm256_add_epi32(str01,scalar);
+        __m256i res23 = _mm256_add_epi32(str23,scalar);
 
-        _mm_store_si128((__m128i*)res.mtrx[0],res_str_0);
-        _mm_store_si128((__m128i*)res.mtrx[1],res_str_1);
-        _mm_store_si128((__m128i*)res.mtrx[2],res_str_2);
-        _mm_store_si128((__m128i*)res.mtrx[3],res_str_3);
+        _mm256_store_si256((__m256i*)res.mtrx[0],res01);
+        _mm256_store_si256((__m256i*)res.mtrx[0],res23);
 
         return res;
     }
@@ -305,25 +285,17 @@ namespace MatrixLib
     {
         MatrixClass res;
 
-        __m128i mtrx_0_str_0 = _mm_load_si128((__m128i*)first.mtrx[0]);
-        __m128i mtrx_0_str_1 = _mm_load_si128((__m128i*)first.mtrx[1]);
-        __m128i mtrx_0_str_2 = _mm_load_si128((__m128i*)first.mtrx[2]);
-        __m128i mtrx_0_str_3 = _mm_load_si128((__m128i*)first.mtrx[3]);
+        __m256i mtrx0_str01 = _mm256_load_si256((__m256i*)first.mtrx[0]);
+        __m256i mtrx0_str23 = _mm256_load_si256((__m256i*)first.mtrx[2]);
 
-        __m128i mtrx_1_str_0 = _mm_load_si128((__m128i*)second.mtrx[0]);
-        __m128i mtrx_1_str_1 = _mm_load_si128((__m128i*)second.mtrx[1]);
-        __m128i mtrx_1_str_2 = _mm_load_si128((__m128i*)second.mtrx[2]);
-        __m128i mtrx_1_str_3 = _mm_load_si128((__m128i*)second.mtrx[3]);
+        __m256i mtrx1_str01 = _mm256_load_si256((__m256i*)second.mtrx[0]);
+        __m256i mtrx1_str23 = _mm256_load_si256((__m256i*)second.mtrx[2]);
 
-        __m128i mtrx_res_str_0 = _mm_sub_epi32(mtrx_0_str_0,mtrx_1_str_0);
-        __m128i mtrx_res_str_1 = _mm_sub_epi32(mtrx_0_str_1,mtrx_1_str_1);
-        __m128i mtrx_res_str_2 = _mm_sub_epi32(mtrx_0_str_2,mtrx_1_str_2);
-        __m128i mtrx_res_str_3 = _mm_sub_epi32(mtrx_0_str_3,mtrx_1_str_3);
+        __m256i res01 = _mm256_sub_epi32(mtrx0_str01,mtrx1_str01);
+        __m256i res23 = _mm256_sub_epi32(mtrx0_str23,mtrx1_str23);
 
-        _mm_store_si128((__m128i*)res.mtrx[0],mtrx_res_str_0);
-        _mm_store_si128((__m128i*)res.mtrx[1],mtrx_res_str_1);
-        _mm_store_si128((__m128i*)res.mtrx[2],mtrx_res_str_2);
-        _mm_store_si128((__m128i*)res.mtrx[3],mtrx_res_str_3);
+        _mm256_store_epi32((__m256i*)res.mtrx[0],res01);
+        _mm256_store_epi32((__m256i*)res.mtrx[2],res23);
 
         return res;
     }
@@ -332,22 +304,16 @@ namespace MatrixLib
     {
         MatrixClass res;
 
-        __m128i str_0 = _mm_load_si128((__m128i*)first.mtrx[0]);
-        __m128i str_1 = _mm_load_si128((__m128i*)first.mtrx[1]);
-        __m128i str_2 = _mm_load_si128((__m128i*)first.mtrx[2]);
-        __m128i str_3 = _mm_load_si128((__m128i*)first.mtrx[3]);
+        __m256i str01 = _mm256_load_si256((__m256i*)first.mtrx[0]);
+        __m256i str23 = _mm256_load_si256((__m256i*)first.mtrx[2]);
 
-        __m128i scalar = _mm_set1_epi32(num);
+        __m256i scalar = _mm256_set1_epi32(num);
 
-        __m128i res_str_0 = _mm_sub_epi32(str_0,scalar);
-        __m128i res_str_1 = _mm_sub_epi32(str_1,scalar);
-        __m128i res_str_2 = _mm_sub_epi32(str_2,scalar);
-        __m128i res_str_3 = _mm_sub_epi32(str_3,scalar);
+        __m256i res01 = _mm256_sub_epi32(str01,scalar);
+        __m256i res23 = _mm256_sub_epi32(str23,scalar);
 
-        _mm_store_si128((__m128i*)res.mtrx[0],res_str_0);
-        _mm_store_si128((__m128i*)res.mtrx[1],res_str_1);
-        _mm_store_si128((__m128i*)res.mtrx[2],res_str_2);
-        _mm_store_si128((__m128i*)res.mtrx[3],res_str_3);
+        _mm256_store_si256((__m256i*)res.mtrx[0],res01);
+        _mm256_store_si256((__m256i*)res.mtrx[2],res23);
 
         return res;
     }
@@ -356,22 +322,41 @@ namespace MatrixLib
     {
         MatrixClass res;
 
-        __m128i str_0 = _mm_load_si128((__m128i*)second.mtrx[0]);
-        __m128i str_1 = _mm_load_si128((__m128i*)second.mtrx[1]);
-        __m128i str_2 = _mm_load_si128((__m128i*)second.mtrx[2]);
-        __m128i str_3 = _mm_load_si128((__m128i*)second.mtrx[3]);
+        __m256i str01 = _mm256_load_si256((__m256i*)second.mtrx[0]);
+        __m256i str23 = _mm256_load_si256((__m256i*)second.mtrx[2]);
 
-        __m128i scalar = _mm_set1_epi32(num);
+        __m256i scalar = _mm256_set1_epi32(num);
 
-        __m128i res_str_0 = _mm_sub_epi32(str_0,scalar);
-        __m128i res_str_1 = _mm_sub_epi32(str_1,scalar);
-        __m128i res_str_2 = _mm_sub_epi32(str_2,scalar);
-        __m128i res_str_3 = _mm_sub_epi32(str_3,scalar);
+        __m256i res01 = _mm256_sub_epi32(str01,scalar);
+        __m256i res23 = _mm256_sub_epi32(str23,scalar);
 
-        _mm_store_si128((__m128i*)res.mtrx[0],res_str_0);
-        _mm_store_si128((__m128i*)res.mtrx[1],res_str_1);
-        _mm_store_si128((__m128i*)res.mtrx[2],res_str_2);
-        _mm_store_si128((__m128i*)res.mtrx[3],res_str_3);
+        _mm256_store_si256((__m256i*)res.mtrx[0],res01);
+        _mm256_store_si256((__m256i*)res.mtrx[0],res23);
+
+        return res;
+    }
+
+    MatrixClass operator*(const MatrixClass& first,const MatrixClass& second)
+    {
+        MatrixClass res;
+
+        __m256i mtrx1_str01 = _mm256_load_si256((__m256i*)&first.mtrx[0]);
+        __m256i mtrx1_str23 = _mm256_load_si256((__m256i*)&first.mtrx[2]);
+
+        __m256i mtrx2_str01 = _mm256_load_si256((__m256i*)&second.mtrx[0]);
+        __m256i mtrx2_str23 = _mm256_load_si256((__m256i*)&second.mtrx[2]);
+
+        __m256i tmp0 = _mm256_unpacklo_epi32(mtrx2_str01,mtrx2_str23);
+        __m256i tmp1 = _mm256_unpackhi_epi32(mtrx2_str01,mtrx2_str23);
+
+        __m256i mtrx2t_str01 = _mm256_permute4x64_epi64(tmp0,0b11011000);
+        __m256i mtrx2t_str23 = _mm256_permute4x64_epi64(tmp1,0b11011000);
+
+        //__m256i res_str01 = _mm256_add_epi32(first_str_01,second_column_01);
+        //__m256i res_str23 = _mm256_add_epi32(first_str_23,second_column_23);
+
+        //_mm256_store_si256((__m256i*)&res.mtrx[0],res_str01);
+        //_mm256_store_si256((__m256i*)&res.mtrx[2],res_str23);
 
         return res;
     }
