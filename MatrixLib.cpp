@@ -340,23 +340,21 @@ namespace MatrixLib
     {
         MatrixClass res;
 
-        __m256i mtrx1_str01 = _mm256_load_si256((__m256i*)&first.mtrx[0]);
-        __m256i mtrx1_str23 = _mm256_load_si256((__m256i*)&first.mtrx[2]);
+        __m256i first01 = _mm256_load_si256((__m256i*)&first.mtrx[0]);
+        __m256i first23 = _mm256_load_si256((__m256i*)&first.mtrx[2]);
 
-        __m256i mtrx2_str01 = _mm256_load_si256((__m256i*)&second.mtrx[0]);
-        __m256i mtrx2_str23 = _mm256_load_si256((__m256i*)&second.mtrx[2]);
+        __m256i second01 = _mm256_load_si256((__m256i*)&second.mtrx[0]);
+        __m256i second23 = _mm256_load_si256((__m256i*)&second.mtrx[2]);
 
-        __m256i tmp0 = _mm256_unpacklo_epi32(mtrx2_str01,mtrx2_str23);
-        __m256i tmp1 = _mm256_unpackhi_epi32(mtrx2_str01,mtrx2_str23);
+        __m256i vec1 = _mm256_shuffle_epi32(second01,0b01000100);
+        __m256i vec2 = _mm256_shuffle_epi32(second23,0b11101110);
 
-        __m256i mtrx2t_str01 = _mm256_permute4x64_epi64(tmp0,0b11011000);
-        __m256i mtrx2t_str23 = _mm256_permute4x64_epi64(tmp1,0b11011000);
+        vec1 = _mm256_permutevar8x32_epi32(vec1,_mm256_setr_epi32(0,2,4,6,1,3,5,7));
+        vec2 = _mm256_permutevar8x32_epi32(vec2,_mm256_setr_epi32(0,2,4,6,1,3,5,7));
 
-        //__m256i res_str01 = _mm256_add_epi32(first_str_01,second_column_01);
-        //__m256i res_str23 = _mm256_add_epi32(first_str_23,second_column_23);
+        __m256i res01 = _mm256_set1_epi32(0);
+        __m256i res23 = _mm256_set1_epi32(0);
 
-        //_mm256_store_si256((__m256i*)&res.mtrx[0],res_str01);
-        //_mm256_store_si256((__m256i*)&res.mtrx[2],res_str23);
 
         return res;
     }
