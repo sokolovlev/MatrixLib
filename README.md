@@ -1,4 +1,3 @@
-WARNING: For stable working, USE compilation flag -msse4.1 (or /arch:AVX  if you are using MSVC)  FOR compile static MathLib
-It is important because MathLib need "_mm_extract_epi32" from <smmintrin.h>
+WARNING: For stable working, USE compilation flag -mavx2
 
 MIT License: [LICENSE.txt](LICENSE.txt).
