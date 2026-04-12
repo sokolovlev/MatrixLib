@@ -294,8 +294,8 @@ namespace MatrixLib
         __m256i res01 = _mm256_sub_epi32(mtrx0_str01,mtrx1_str01);
         __m256i res23 = _mm256_sub_epi32(mtrx0_str23,mtrx1_str23);
 
-        _mm256_store_epi32((__m256i*)res.mtrx[0],res01);
-        _mm256_store_epi32((__m256i*)res.mtrx[2],res23);
+        _mm256_store_si256((__m256i*)res.mtrx[0],res01);
+        _mm256_store_si256((__m256i*)res.mtrx[2],res23);
 
         return res;
     }
@@ -331,7 +331,7 @@ namespace MatrixLib
         __m256i res23 = _mm256_sub_epi32(str23,scalar);
 
         _mm256_store_si256((__m256i*)res.mtrx[0],res01);
-        _mm256_store_si256((__m256i*)res.mtrx[0],res23);
+        _mm256_store_si256((__m256i*)res.mtrx[2],res23);
 
         return res;
     }
@@ -346,15 +346,50 @@ namespace MatrixLib
         __m256i second01 = _mm256_load_si256((__m256i*)&second.mtrx[0]);
         __m256i second23 = _mm256_load_si256((__m256i*)&second.mtrx[2]);
 
-        __m256i vec1 = _mm256_shuffle_epi32(second01,0b01000100);
-        __m256i vec2 = _mm256_shuffle_epi32(second23,0b11101110);
+        __m256i tmp0 = _mm256_unpacklo_epi32(second01, second23);
+        __m256i tmp1 = _mm256_unpackhi_epi32(second01, second23);
+        __m256i col01 = _mm256_permute4x64_epi64(tmp0, 0b11011000);
+        __m256i col23 = _mm256_permute4x64_epi64(tmp1, 0b11011000);
 
-        vec1 = _mm256_permutevar8x32_epi32(vec1,_mm256_setr_epi32(0,2,4,6,1,3,5,7));
-        vec2 = _mm256_permutevar8x32_epi32(vec2,_mm256_setr_epi32(0,2,4,6,1,3,5,7));
+        __m256i row0_perm = _mm256_permute4x64_epi64(first01, 0b00000000);
+        __m256i row1_perm = _mm256_permute4x64_epi64(first01, 0b01010101);
+        __m256i row2_perm = _mm256_permute4x64_epi64(first23, 0b00000000);
+        __m256i row3_perm = _mm256_permute4x64_epi64(first23, 0b01010101);
 
-        __m256i res01 = _mm256_set1_epi32(0);
-        __m256i res23 = _mm256_set1_epi32(0);
+        __m256i res0 = _mm256_mullo_epi32(row0_perm, col01);
+        __m256i res1 = _mm256_mullo_epi32(row1_perm, col01);
+        __m256i res2 = _mm256_mullo_epi32(row2_perm, col01);
+        __m256i res3 = _mm256_mullo_epi32(row3_perm, col01);
 
+        __m256i row0_perm2 = _mm256_permute4x64_epi64(first01, 0b10101010);
+        __m256i row1_perm2 = _mm256_permute4x64_epi64(first01, 0b11111111);
+        __m256i row2_perm2 = _mm256_permute4x64_epi64(first23, 0b10101010);
+        __m256i row3_perm2 = _mm256_permute4x64_epi64(first23, 0b11111111);
+
+        res0 = _mm256_add_epi32(res0, _mm256_mullo_epi32(row0_perm2, col23));
+        res1 = _mm256_add_epi32(res1, _mm256_mullo_epi32(row1_perm2, col23));
+        res2 = _mm256_add_epi32(res2, _mm256_mullo_epi32(row2_perm2, col23));
+        res3 = _mm256_add_epi32(res3, _mm256_mullo_epi32(row3_perm2, col23));
+
+        __m128i r0 = _mm_add_epi32(_mm256_castsi256_si128(res0), _mm256_extracti128_si256(res0, 1));
+        __m128i r1 = _mm_add_epi32(_mm256_castsi256_si128(res1), _mm256_extracti128_si256(res1, 1));
+        __m128i r2 = _mm_add_epi32(_mm256_castsi256_si128(res2), _mm256_extracti128_si256(res2, 1));
+        __m128i r3 = _mm_add_epi32(_mm256_castsi256_si128(res3), _mm256_extracti128_si256(res3, 1));
+
+        r0 = _mm_add_epi32(r0, _mm_srli_si128(r0, 8));
+        r0 = _mm_add_epi32(r0, _mm_srli_si128(r0, 4));
+        r1 = _mm_add_epi32(r1, _mm_srli_si128(r1, 8));
+        r1 = _mm_add_epi32(r1, _mm_srli_si128(r1, 4));
+        r2 = _mm_add_epi32(r2, _mm_srli_si128(r2, 8));
+        r2 = _mm_add_epi32(r2, _mm_srli_si128(r2, 4));
+        r3 = _mm_add_epi32(r3, _mm_srli_si128(r3, 8));
+        r3 = _mm_add_epi32(r3, _mm_srli_si128(r3, 4));
+
+        __m256i res01 = _mm256_set_m128i(r1, r0);
+        __m256i res23 = _mm256_set_m128i(r3, r2);
+
+        _mm256_store_si256((__m256i*)res.mtrx[0],res01);
+        _mm256_store_si256((__m256i*)res.mtrx[2],res23);
 
         return res;
     }
