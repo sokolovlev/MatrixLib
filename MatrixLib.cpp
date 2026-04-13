@@ -394,4 +394,35 @@ namespace MatrixLib
         return res;
     }
 
+    VectorClass operator*(const MatrixClass& matrix,const VectorClass& vector)
+    {
+        VectorClass res;
+
+        __m256i mtrx01 = _mm256_load_si256((__m256i*)matrix.mtrx[0]);
+        __m256i mtrx23 = _mm256_load_si256((__m256i*)matrix.mtrx[2]);
+
+        __m128i data = _mm_load_si128((__m128i*)vector.vec);
+        __m256i vec = _mm256_broadcastsi128_si256(data);
+
+        __m256i res0 = _mm256_mullo_epi32(mtrx01,vec);
+        __m256i res1 = _mm256_mullo_epi32(mtrx23,vec);
+
+        __m256i sum0 = _mm256_hadd_epi32(res0,res0);
+        __m256i sum1 = _mm256_hadd_epi32(sum0,sum0);
+        __m128i row0 = _mm256_castsi256_si128(sum1);
+        __m128i row1 = _mm256_extracti128_si256(sum1, 1);
+
+        sum0 = _mm256_hadd_epi32(res1,res1);
+        sum1 = _mm256_hadd_epi32(sum0,sum0);
+        __m128i row2 = _mm256_castsi256_si128(sum1);
+        __m128i row3 = _mm256_extracti128_si256(sum1, 1);
+
+        __m128i result = _mm_blend_epi32(row0, row1, 0b0010);
+        result = _mm_blend_epi32(result, row2, 0b0100);
+        result = _mm_blend_epi32(result, row3, 0b1000);
+
+        _mm_store_si128((__m128i*)res.vec, result);
+        return res;
+    }
+
 }

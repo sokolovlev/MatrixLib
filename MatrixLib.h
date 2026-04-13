@@ -8,6 +8,7 @@
 
 namespace MatrixLib
 {
+    class MatrixClass;
 
     class VectorClass
     {
@@ -38,13 +39,16 @@ namespace MatrixLib
         friend int dot(const int* first, const VectorClass& second);
         friend int dot(const VectorClass& first,const int* second);
 
-
         friend VectorClass operator/(const VectorClass& first,const int& num);
+
+        friend VectorClass operator*(const MatrixClass& mtrx,const VectorClass& vec);
     };
 
     int dot(const VectorClass& first, const VectorClass& second);
     int dot(const int* first, const VectorClass& second);
     int dot(const VectorClass& first,const int* second);
+
+    VectorClass operator*(const MatrixClass& mtrx,const VectorClass& vec);
 
     class MatrixClass
     {
@@ -69,6 +73,8 @@ namespace MatrixLib
         friend MatrixClass operator-(const int& num, const MatrixClass& second);
 
         friend MatrixClass operator*(const MatrixClass& first,const MatrixClass& second);
+
+        friend VectorClass operator*(const MatrixClass& mtrx,const VectorClass& vec);
 
     };
 
