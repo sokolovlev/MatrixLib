@@ -268,7 +268,7 @@ namespace MatrixLib
         MatrixClass res;
 
         __m256i str01 = _mm256_load_si256((__m256i*)second.mtrx[0]);
-        __m256i str23 = _mm256_load_si256((__m256i*)second.mtrx[0]);
+        __m256i str23 = _mm256_load_si256((__m256i*)second.mtrx[2]);
 
         __m256i scalar = _mm256_set1_epi32(num);
 

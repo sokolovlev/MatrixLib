@@ -8,6 +8,7 @@
 
 namespace MatrixLib
 {
+    class VectorClass;
     class MatrixClass;
 
     class VectorClass
@@ -49,6 +50,9 @@ namespace MatrixLib
     int dot(const VectorClass& first,const int* second);
 
     VectorClass operator*(const MatrixClass& mtrx,const VectorClass& vec);
+
+    static VectorClass ZeroVector(){return VectorClass{0,0,0,0};}
+    static VectorClass OneVector(){return VectorClass{1,1,1,0};}
 
     class MatrixClass
     {
