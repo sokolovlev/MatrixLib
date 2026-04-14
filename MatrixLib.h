@@ -80,6 +80,16 @@ namespace MatrixLib
 
         friend VectorClass operator*(const MatrixClass& mtrx,const VectorClass& vec);
 
+        static const MatrixClass& ZeroMatrix(){return MatrixClass{};}
+        static const MatrixClass& IdentityMatrix()
+        {
+            static const MatrixClass mtrx{{1,0,0,0},
+                                          {0,1,0,0},
+                                          {0,0,1,0},
+                                          {0,0,0,1}};
+            return mtrx;
+        }
+
     };
 
 }
